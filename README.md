@@ -20,3 +20,8 @@ execute the following sql commands to create databaese and table. Then you can e
 	name varchar (100) not null
 )`
 
+# Run the project:
+
+In the project folder: ```dotnet run```
+
+To access the todos endpoint go to ```http://localhost:5001/api/recipes```
