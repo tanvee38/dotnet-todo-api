@@ -77,6 +77,8 @@ namespace RestApi
         [HttpPost]
         public async Task<ActionResult<Recipe>> PostRecipe(Recipe recipe)
         {
+            Console.WriteLine(recipe);
+            
             _context.Recipe.Add(recipe);
             await _context.SaveChangesAsync();
 

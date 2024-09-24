@@ -15,10 +15,16 @@ execute the following sql commands to create databaese and table. Then you can e
 
 `use TodosDb;`
 
+You don't need to create with create command in sql editor.
 `create table Recipe (
 	id INT not null primary key,
 	name varchar (100) not null
 )`
+
+instead using the following dotnet command:
+
+dotnet ef migrations add AddAutoIncrementToRecipe
+dotnet ef database update
 
 # Run the project:
 
