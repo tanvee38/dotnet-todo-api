@@ -1,5 +1,3 @@
-using System;
-
 namespace RestApi.Models
 {
     public class Recipe

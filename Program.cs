@@ -1,5 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+
+using RestApi.Repositories.Interfaces; // for IRecipeRepository
+using RestApi.Repositories.Implementations; // for RecipeRepository
+using RestApi.Services.Interfaces; // Adjust according to your structure
+using RestApi.Services.Implementations; // Adjust accordingly
+
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ApplicationDbContext") ?? throw new InvalidOperationException("Connection string 'ApplicationDbContext' not found.")));
@@ -16,6 +23,10 @@ builder.Services.AddCors(options =>
                   .AllowAnyMethod();
         });
 });
+
+builder.Services.AddScoped<IRecipeRepository, RecipeRepository>();
+builder.Services.AddScoped<IRecipeService, RecipeService>();
+
 
 // Add services to the container.
 

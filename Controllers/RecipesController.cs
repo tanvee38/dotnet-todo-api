@@ -1,11 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using RestApi.Models;
+using RestApi.Services.Interfaces;
 
 namespace RestApi
 {
@@ -13,97 +8,71 @@ namespace RestApi
     [ApiController]
     public class RecipesController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IRecipeService _recipeService;
 
-        public RecipesController(ApplicationDbContext context)
+        public RecipesController(IRecipeService recipeService)
         {
-            _context = context;
+            _recipeService = recipeService;
         }
 
-        // GET: api/Recipes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Recipe>>> GetRecipe()
+        public async Task<ActionResult<IEnumerable<Recipe>>> GetRecipes()
         {
-            return await _context.Recipe.ToListAsync();
+            var recipes = await _recipeService.GetAllRecipesAsync();
+            return Ok(recipes);
         }
 
-        // GET: api/Recipes/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Recipe>> GetRecipe(int id)
         {
-            var recipe = await _context.Recipe.FindAsync(id);
+            var recipe = await _recipeService.GetRecipeByIdAsync(id);
 
             if (recipe == null)
             {
                 return NotFound();
             }
 
-            return recipe;
+            return Ok(recipe);
         }
 
-        // PUT: api/Recipes/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutRecipe(int id, Recipe recipe)
-        {
-            if (id != recipe.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(recipe).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!RecipeExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Recipes
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Recipe>> PostRecipe(Recipe recipe)
         {
-            Console.WriteLine(recipe);
-            
-            _context.Recipe.Add(recipe);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetRecipe", new { id = recipe.Id }, recipe);
+            await _recipeService.AddRecipeAsync(recipe);
+            return CreatedAtAction(nameof(GetRecipe), new { id = recipe.Id }, recipe);
         }
 
-        // DELETE: api/Recipes/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutRecipe(int id, Recipe recipe)
+        {
+            try
+            {
+                await _recipeService.UpdateRecipeAsync(id, recipe);
+            }
+            catch (ArgumentException)
+            {
+                return BadRequest();
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+            
+            return NoContent();
+        }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRecipe(int id)
         {
-            var recipe = await _context.Recipe.FindAsync(id);
+            var recipe = await _recipeService.GetRecipeByIdAsync(id);
             if (recipe == null)
             {
                 return NotFound();
             }
 
-            _context.Recipe.Remove(recipe);
-            await _context.SaveChangesAsync();
-
+            await _recipeService.DeleteRecipeAsync(id);
             return NoContent();
         }
-
-        private bool RecipeExists(int id)
-        {
-            return _context.Recipe.Any(e => e.Id == id);
-        }
     }
+
 }
