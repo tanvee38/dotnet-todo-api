@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-using RestApi.Repositories.Interfaces; // for IRecipeRepository
-using RestApi.Repositories.Implementations; // for RecipeRepository
+using RestApi.Repositories.Interfaces; // for ITodoRepository
+using RestApi.Repositories.Implementations; // for TodoRepository
 using RestApi.Services.Interfaces; // Adjust according to your structure
 using RestApi.Services.Implementations; // Adjust accordingly
 
@@ -24,8 +24,8 @@ builder.Services.AddCors(options =>
         });
 });
 
-builder.Services.AddScoped<IRecipeRepository, RecipeRepository>();
-builder.Services.AddScoped<IRecipeService, RecipeService>();
+builder.Services.AddScoped<ITodoRepository, TodoRepository>();
+builder.Services.AddScoped<ITodoService, TodoService>();
 
 
 // Add services to the container.

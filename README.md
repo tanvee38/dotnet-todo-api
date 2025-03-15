@@ -17,13 +17,9 @@ Use a db client like dBeaver, connect it with the local SQL server DB server and
 
 `use TodosDb;`
 
-You don't need to create with create command in sql editor.
-`create table Recipe (
-	id INT not null primary key,
-	name varchar (100) not null
-)`
 
-instead using the following dotnet entity framework command:
+
+You can use the dotnet entity framework command for db actions. For example:
 
 ```dotnet ef migrations add AddAutoIncrementToRecipe```
 ```dotnet ef database update```
@@ -34,4 +30,4 @@ In the project root folder to build the project: ```dotnet build```
 
 In the project root folder to run the project: ```dotnet run```
 
-To access the todos endpoint go to ```http://localhost:5001/api/recipes```
+To access the todos endpoint go to ```http://localhost:5001/api/todos```

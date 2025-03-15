@@ -8,5 +8,5 @@ using RestApi.Models;
         {
         }
 
-        public DbSet<RestApi.Models.Recipe> Recipe { get; set; } = default!;
+        public DbSet<RestApi.Models.Todo> Todos { get; set; } = default!;
     }
