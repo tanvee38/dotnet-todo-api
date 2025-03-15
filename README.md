@@ -21,7 +21,7 @@ Use a db client like dBeaver, connect it with the local SQL server DB server and
 
 You can use the dotnet entity framework command for db actions. For example:
 
-```dotnet ef migrations add AddAutoIncrementToRecipe```
+```dotnet ef migrations add InitialCreateTodosTable```
 ```dotnet ef database update```
 
 # Run the dotnet todo rest api:
