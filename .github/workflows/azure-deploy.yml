@@ -1,0 +1,41 @@
+name: Deploy .NET Todo API to Azure
+
+on:
+  push:
+    branches:
+      - main  # Trigger deploy when you push to the 'main' branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Using Ubuntu as the CI/CD runner
+
+    steps:
+    # Checkout the code from the GitHub repo
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    # Set up .NET environment
+    - name: Set up .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '5.0'  # Specify the .NET version you're using
+
+    # Restore dependencies (NuGet)
+    - name: Restore dependencies
+      run: dotnet restore
+
+    # Build the .NET project
+    - name: Build the app
+      run: dotnet build --configuration Release
+
+    # Publish the app (prepare the app for deployment)
+    - name: Publish the app
+      run: dotnet publish --configuration Release --output ./publish
+
+    # Deploy the app to Azure
+    - name: Deploy to Azure Web App
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: todo-api-app  # Replace with your App Service name
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+        package: ./publish
