@@ -18,9 +18,10 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowAngularApp",
         policy =>
         {
-            policy.WithOrigins("http://localhost:4200") // Replace with the Angular app's URL
+            // policy.WithOrigins("http://localhost:4200") // Replace with the Angular app's URL
+            policy.WithOrigins("https://white-rock-0f754d01e.6.azurestaticapps.net/") // Replace with the Angular app's URL
                   .AllowAnyHeader()
-                  .AllowAnyMethod();
+                  .AllowAnyMethod();  
         });
 });
 
