@@ -65,4 +65,6 @@ jobs:
           app-name: 'todo-api-app'
           slot-name: 'Production'
           package: .
+        env:
+          ConnectionStrings__ApplicationDbContext: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}
           
